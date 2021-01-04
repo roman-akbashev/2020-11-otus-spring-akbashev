@@ -23,18 +23,13 @@ public class StudentTestingImpl implements StudentTesting {
         List<Question> questions = questionService.getQuestions();
         ioService.print("Enter your name: ");
         String name = ioService.read();
-        ioService.print("");
         for (Question question : questions) {
             printQuestion(question);
             int studentAnswer = readAnswer();
             checkAnswer(question, studentAnswer);
         }
-        ioService.print("The test contained " + questions.size() + " questions");
-        ioService.print(name + " you have successfully answered " + getNumberOfCorrectStudentAnswers() + " questions");
-    }
-
-    public int getNumberOfCorrectStudentAnswers() {
-        return numberOfCorrectStudentAnswers;
+        ioService.print("\nThe test contained " + questions.size() + " questions");
+        ioService.print(name + " you have successfully answered " + numberOfCorrectStudentAnswers + " questions");
     }
 
     private int readAnswer() {
@@ -49,7 +44,7 @@ public class StudentTestingImpl implements StudentTesting {
     }
 
     private void printQuestion(Question question) {
-        ioService.print(question.getText());
+        ioService.print("\n" + question.getText());
         List<String> answers = question.getAnswers();
         for (int i = 0; i < question.getAnswers().size(); i++) {
             ioService.print(i + 1 + ") " + answers.get(i));

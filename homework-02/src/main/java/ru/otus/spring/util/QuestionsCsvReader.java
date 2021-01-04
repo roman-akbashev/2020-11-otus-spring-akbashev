@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import ru.otus.spring.exeptions.IncorrectResourceFileException;
+import ru.otus.spring.exceptions.IncorrectRecordFormatException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,23 +47,23 @@ public class QuestionsCsvReader implements QuestionReader {
             checkCsvRecords(records);
             return records;
         } catch (IOException e) {
-            throw new IncorrectResourceFileException(e);
+            throw new IncorrectRecordFormatException(e);
         }
     }
 
     private void checkCsvRecords(List<List<String>> records) {
         if (records.size() == 0) {
-            throw new IncorrectResourceFileException("Resource file " + resourceName + " is empty");
+            throw new IncorrectRecordFormatException("Resource file " + resourceName + " contains no records");
         }
         records.forEach(recordStrings -> {
             int recordSize = recordStrings.size();
             if (recordSize < 4) {
-                throw new IncorrectResourceFileException("The record must contain a question, " +
+                throw new IncorrectRecordFormatException("The record must contain a question, " +
                         "two answers, and the number of the correct question. Elements must be separated by a symbol \";\"");
             }
             String lastRecordElement = recordStrings.get(recordSize - 1);
             if (!isNumber(lastRecordElement)) {
-                throw new IncorrectResourceFileException("The record does not contain the number of the answer to the question");
+                throw new IncorrectRecordFormatException("The record does not contain the number of the answer to the question");
             }
         });
     }

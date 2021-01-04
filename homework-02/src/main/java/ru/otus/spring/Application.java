@@ -12,5 +12,4 @@ public class Application {
         StudentTesting studentTesting = context.getBean(StudentTestingImpl.class);
         studentTesting.startTesting();
     }
-
 }

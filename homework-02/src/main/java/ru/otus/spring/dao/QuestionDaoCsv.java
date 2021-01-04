@@ -2,6 +2,7 @@ package ru.otus.spring.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.domain.Question;
+import ru.otus.spring.exceptions.IncorrectRecordFormatException;
 import ru.otus.spring.util.QuestionReader;
 
 import java.util.ArrayList;
@@ -30,7 +31,12 @@ public class QuestionDaoCsv implements QuestionDao {
             for (int i = 1; i < recordSize - 1; i++) {
                 answers.add(record.get(i));
             }
-            int correctAnswerNumber = Integer.parseInt(record.get(recordSize - 1));
+            int correctAnswerNumber;
+            try{
+                correctAnswerNumber = Integer.parseInt(record.get(recordSize - 1));
+            } catch (NumberFormatException e){
+                throw new IncorrectRecordFormatException("The record does not contain the number of the answer to the question");
+            }
             questions.add(new Question(questionText, answers, correctAnswerNumber));
         }
         return questions;
