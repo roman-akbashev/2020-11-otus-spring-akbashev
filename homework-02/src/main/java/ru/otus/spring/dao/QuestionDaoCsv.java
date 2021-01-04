@@ -32,9 +32,9 @@ public class QuestionDaoCsv implements QuestionDao {
                 answers.add(record.get(i));
             }
             int correctAnswerNumber;
-            try{
+            try {
                 correctAnswerNumber = Integer.parseInt(record.get(recordSize - 1));
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 throw new IncorrectRecordFormatException("The record does not contain the number of the answer to the question");
             }
             questions.add(new Question(questionText, answers, correctAnswerNumber));
