@@ -8,7 +8,6 @@ import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.QuestionService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentTestingImpl implements StudentTesting {
@@ -64,7 +63,7 @@ public class StudentTestingImpl implements StudentTesting {
         }
     }
 
-    private String getMessage(String bundleParamName, Object externalParam){
+    private String getMessage(String bundleParamName, Object externalParam) {
         return messageSource.getMessage(bundleParamName, new Object[]{externalParam}, appProperties.getLocale());
     }
 }
