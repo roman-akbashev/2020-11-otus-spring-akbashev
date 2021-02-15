@@ -1,0 +1,4 @@
+application:
+  locale: ru_RU
+resources:
+  csvFileName: "questions_@locale.csv"
