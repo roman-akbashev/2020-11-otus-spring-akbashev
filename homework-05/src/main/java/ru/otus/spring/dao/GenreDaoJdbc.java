@@ -52,7 +52,7 @@ public class GenreDaoJdbc implements GenreDao {
 
     @Override
     public boolean checkRelatedBooksById(long id) {
-        Boolean result = jdbcOperations.queryForObject("select exists(select 1 from books b left join genres g on g.id = b.genre_id " +
+        Boolean result = jdbcOperations.queryForObject("select exists(select 1 from books b inner join genres g on g.id = b.genre_id " +
                 "where b.genre_id = :id)", Map.of("id", id), Boolean.class);
         return result == null ? false : result;
     }
