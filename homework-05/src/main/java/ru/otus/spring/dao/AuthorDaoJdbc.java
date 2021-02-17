@@ -52,7 +52,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public boolean checkRelatedBooksById(long id) {
-        Boolean result = jdbcOperations.queryForObject("select exists(select 1 from books b left join authors a on a.id = b.author_id " +
+        Boolean result = jdbcOperations.queryForObject("select exists(select 1 from books b inner join authors a on a.id = b.author_id " +
                 "where b.author_id = :id)", Map.of("id", id), Boolean.class);
         return result == null ? false : result;
     }
