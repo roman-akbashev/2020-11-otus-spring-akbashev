@@ -50,11 +50,10 @@ public class GenreRepositoryJpa implements GenreRepository {
     }
 
     @Override
-    public boolean checkRelatedBooksByGenre(Genre genre) {
-        TypedQuery<Long> query = em.createQuery("select count(b) from Book b join b.genre where b.genre.id = :genreId", Long.class);
+    public boolean checkRelatedBookByGenre(Genre genre) {
+        TypedQuery<Integer> query = em.createQuery("select 1 from Book b join b.genre where b.genre.id = :genreId", Integer.class);
         query.setParameter("genreId", genre.getId());
-        long booksCountForGenre = query.getSingleResult();
-        return booksCountForGenre > 0;
+        return !query.getResultList().isEmpty();
     }
 
     @Override

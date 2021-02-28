@@ -43,7 +43,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public void deleteById(long id) {
         Genre genre = getById(id);
-        if (!genreRepository.checkRelatedBooksByGenre(genre)) {
+        if (!genreRepository.checkRelatedBookByGenre(genre)) {
             genreRepository.remove(genre);
         } else
             throw new EntityCanNotBeDeletedException("Genre with id " + id + " can not be deleted because there is a link with the book");

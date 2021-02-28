@@ -50,11 +50,10 @@ public class AuthorRepositoryJpa implements AuthorRepository {
     }
 
     @Override
-    public boolean checkRelatedBooksByAuthor(Author author) {
-        TypedQuery<Long> query = em.createQuery("select count(b) from Book b join b.author where b.author.id = :authorId", Long.class);
+    public boolean checkRelatedBookByAuthor(Author author) {
+        TypedQuery<Integer> query = em.createQuery("select 1 from Book b join b.author where b.author.id = :authorId", Integer.class);
         query.setParameter("authorId", author.getId());
-        long booksCountForAuthor = query.getSingleResult();
-        return booksCountForAuthor > 0;
+        return !query.getResultList().isEmpty();
     }
 
     @Override

@@ -43,7 +43,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteById(long id) {
         Author author = getById(id);
-        if (!authorRepository.checkRelatedBooksByAuthor(author)) {
+        if (!authorRepository.checkRelatedBookByAuthor(author)) {
             authorRepository.remove(author);
         } else
             throw new EntityCanNotBeDeletedException("Author with id " + id + " can not be deleted because there is a link with the book");

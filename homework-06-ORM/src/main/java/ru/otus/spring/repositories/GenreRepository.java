@@ -17,7 +17,7 @@ public interface GenreRepository {
 
     void remove(Genre author);
 
-    boolean checkRelatedBooksByGenre(Genre genre);
+    boolean checkRelatedBookByGenre(Genre genre);
 
     long count();
 }

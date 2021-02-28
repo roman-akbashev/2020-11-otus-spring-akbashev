@@ -2,17 +2,16 @@ package ru.otus.spring.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.domain.Author;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
-@JdbcTest
+@DataJpaTest
 @Import(AuthorRepositoryJpa.class)
 class AuthorRepositoryJpaTest {
 
@@ -21,8 +20,7 @@ class AuthorRepositoryJpaTest {
 
     @Test
     void insert() {
-        Author expectedAuthor = Author.builder().id(5L).name("Author4").build();
-        authorRepository.save(expectedAuthor);
+        Author expectedAuthor = authorRepository.save(Author.builder().name("Author4").build());
         Author actualAuthor = authorRepository.findById(expectedAuthor.getId()).orElseGet(() -> fail("Author not found!"));
         assertThat(actualAuthor).isEqualTo(expectedAuthor);
     }
@@ -36,7 +34,7 @@ class AuthorRepositoryJpaTest {
     }
 
     @Test
-    void getById() {
+    void findById() {
         Author expectedAuthor = Author.builder().id(2L).name("Author2").build();
         Author actualAuthor = authorRepository.findById(expectedAuthor.getId()).orElseGet(() -> fail("Author not found!"));
         assertThat(actualAuthor).isEqualTo(expectedAuthor);
@@ -52,6 +50,12 @@ class AuthorRepositoryJpaTest {
     }
 
     @Test
+    void checkRelatedBook() {
+        assertFalse(authorRepository.checkRelatedBookByAuthor(Author.builder().id(4L).build()));
+        assertTrue(authorRepository.checkRelatedBookByAuthor(Author.builder().id(1L).build()));
+    }
+
+    @Test
     void getAll() {
         Author author1 = Author.builder().id(1L).name("Author1").build();
         Author author2 = Author.builder().id(2L).name("Author2").build();
@@ -63,10 +67,11 @@ class AuthorRepositoryJpaTest {
     }
 
     @Test
-    void deleteById() {
+    void remove() {
         final long authorForDeleteId = 4L;
-        authorRepository.remove(Author.builder().id(authorForDeleteId).build());
-        assertFalse(authorRepository.findById(4L).isPresent());
+        Author author = authorRepository.findById(authorForDeleteId).orElseGet(() -> fail("Author not found!"));
+        authorRepository.remove(author);
+        assertFalse(authorRepository.findById(authorForDeleteId).isPresent());
     }
 
     @Test

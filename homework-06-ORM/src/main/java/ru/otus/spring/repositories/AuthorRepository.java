@@ -17,7 +17,7 @@ public interface AuthorRepository {
 
     void remove(Author author);
 
-    boolean checkRelatedBooksByAuthor(Author author);
+    boolean checkRelatedBookByAuthor(Author author);
 
     long count();
 }

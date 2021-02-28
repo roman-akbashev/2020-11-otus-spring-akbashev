@@ -2,17 +2,16 @@ package ru.otus.spring.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.domain.Genre;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
-@JdbcTest
+@DataJpaTest
 @Import(GenreRepositoryJpa.class)
 class GenreRepositoryJpaTest {
 
@@ -21,8 +20,7 @@ class GenreRepositoryJpaTest {
 
     @Test
     void insert() {
-        Genre expectedGenre = Genre.builder().id(5L).name("Genre4").build();
-        genreRepository.save(expectedGenre);
+        Genre expectedGenre = genreRepository.save(Genre.builder().name("Genre4").build());
         Genre actualGenre = genreRepository.findById(expectedGenre.getId()).orElseGet(() -> fail("Genre not found!"));
         assertThat(actualGenre).isEqualTo(expectedGenre);
     }
@@ -52,6 +50,12 @@ class GenreRepositoryJpaTest {
     }
 
     @Test
+    void checkRelatedBook() {
+        assertFalse(genreRepository.checkRelatedBookByGenre(Genre.builder().id(4L).build()));
+        assertTrue(genreRepository.checkRelatedBookByGenre(Genre.builder().id(1L).build()));
+    }
+
+    @Test
     void getAll() {
         Genre genre1 = Genre.builder().id(1L).name("Genre1").build();
         Genre genre2 = Genre.builder().id(2L).name("Genre2").build();
@@ -63,10 +67,11 @@ class GenreRepositoryJpaTest {
     }
 
     @Test
-    void deleteById() {
+    void remove() {
         final long genreForDeleteId = 4L;
-        genreRepository.remove(Genre.builder().id(genreForDeleteId).build());
-        assertFalse(genreRepository.findById(4L).isPresent());
+        Genre genre = genreRepository.findById(genreForDeleteId).orElseGet(() -> fail("Genre not found!"));
+        genreRepository.remove(genre);
+        assertFalse(genreRepository.findById(genreForDeleteId).isPresent());
     }
 
     @Test

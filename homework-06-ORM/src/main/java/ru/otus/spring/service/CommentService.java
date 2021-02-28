@@ -2,8 +2,6 @@ package ru.otus.spring.service;
 
 import ru.otus.spring.domain.Comment;
 
-import java.util.List;
-
 public interface CommentService {
 
     void create(String commentText, long bookId);
