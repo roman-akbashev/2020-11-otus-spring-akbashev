@@ -8,8 +8,6 @@ public interface AuthorService {
 
     void create(String name);
 
-    void update(String id, String name);
-
     List<Author> readAll();
 
     List<Author> readByName(String name);

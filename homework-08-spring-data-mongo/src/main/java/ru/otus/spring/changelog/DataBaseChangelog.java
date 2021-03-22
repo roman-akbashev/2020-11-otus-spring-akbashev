@@ -23,8 +23,6 @@ public class DataBaseChangelog {
     private Genre tragedyGenre;
 
     private Book gulliverBook;
-    private Book idiotBook;
-    private Book faustBook;
 
     @ChangeSet(order = "000", id = "dropDb", author = "akbashev", runAlways = true)
     public void dropDb(MongoDatabase db) {

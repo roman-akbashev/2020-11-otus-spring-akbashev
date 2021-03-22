@@ -8,8 +8,6 @@ public interface GenreService {
 
     void create(String name);
 
-    void update(String id, String name);
-
     List<Genre> readAll();
 
     List<Genre> readByName(String name);

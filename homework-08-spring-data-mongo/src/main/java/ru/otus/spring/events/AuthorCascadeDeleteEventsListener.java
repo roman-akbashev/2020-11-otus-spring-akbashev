@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventLis
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.stereotype.Component;
 import ru.otus.spring.domain.Author;
+import ru.otus.spring.exceptions.EntityCanNotBeDeletedException;
 import ru.otus.spring.repositories.BookRepository;
 
 @Component
@@ -18,7 +19,7 @@ public class AuthorCascadeDeleteEventsListener extends AbstractMongoEventListene
         val source = event.getSource();
         String id = source.get("_id").toString();
         if (bookRepository.checkExistsByAuthorId(id)) {
-            throw new RuntimeException("Author with id " + id + " can not be deleted because there is a link with the book");
+            throw new EntityCanNotBeDeletedException("Author with id " + id + " can not be deleted because there is a link with the book");
         }
     }
 }
