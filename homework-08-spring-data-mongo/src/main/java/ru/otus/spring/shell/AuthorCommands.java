@@ -19,6 +19,11 @@ public class AuthorCommands {
         authorService.create(authorName);
     }
 
+    @ShellMethod(value = "UpdateAuthor", key = {"ua", "update-author"})
+    public void updateAuthor(@ShellOption String authorId, @ShellOption String authorName) {
+        authorService.update(authorId, authorName);
+    }
+
     @ShellMethod(value = "ReadAuthors", key = {"ras", "read-authors"})
     public String readAuthors() {
         return convertToTable(authorService.readAll());

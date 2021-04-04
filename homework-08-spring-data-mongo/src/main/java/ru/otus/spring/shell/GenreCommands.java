@@ -19,6 +19,11 @@ public class GenreCommands {
         genreService.create(genreName);
     }
 
+    @ShellMethod(value = "UpdateGenre", key = {"ug", "update-genre"})
+    public void updateGenre(@ShellOption String genreId, @ShellOption String genreName) {
+        genreService.update(genreId, genreName);
+    }
+
     @ShellMethod(value = "ReadGenres", key = {"rgs", "read-genres"})
     public String readGenres() {
         return convertToTable(genreService.readAll());

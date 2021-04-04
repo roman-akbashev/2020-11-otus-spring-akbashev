@@ -20,6 +20,14 @@ public class GenreServiceImpl implements GenreService {
         genreRepository.save(Genre.builder().name(name).build());
     }
 
+    @Transactional
+    @Override
+    public void update(String id, String name) {
+        Genre genre = getById(id);
+        genre.setName(name);
+        genreRepository.save(genre);
+    }
+
     @Override
     public List<Genre> readAll() {
         return genreRepository.findAll();
