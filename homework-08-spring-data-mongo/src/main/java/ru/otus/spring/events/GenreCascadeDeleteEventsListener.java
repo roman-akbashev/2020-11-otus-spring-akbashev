@@ -19,7 +19,7 @@ public class GenreCascadeDeleteEventsListener extends AbstractMongoEventListener
         super.onBeforeDelete(event);
         val source = event.getSource();
         String id = source.get("_id").toString();
-        if (bookRepository.checkExistsByAuthorId(id)) {
+        if (bookRepository.checkExistsByGenreId(id)) {
             throw new EntityCanNotBeDeletedException("Genre with id " + id + " can not be deleted because there is a link with the book");
         }
     }

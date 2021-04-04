@@ -61,16 +61,18 @@ class BookRepositoryTest extends AbstractRepositoryTest {
         assertThat(actualBooksByName).containsExactlyInAnyOrderElementsOf(expectedBooks);
     }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
-    void checkExistsByAuthorId() {
+    void checkExistsByAuthor() {
         Author author1 = Author.builder().id("1").name("Author1").build();
         Author author3 = Author.builder().id("3").name("Author3").build();
         assertTrue(bookRepository.checkExistsByAuthorId(author1.getId()));
         assertFalse(bookRepository.checkExistsByAuthorId(author3.getId()));
     }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
-    void checkExistsByGenreId() {
+    void checkExistsByGenre() {
         Genre genre1 = Genre.builder().id("1").name("Genre1").build();
         Genre genre3 = Genre.builder().id("3").name("Genre3").build();
         assertTrue(bookRepository.checkExistsByGenreId(genre1.getId()));

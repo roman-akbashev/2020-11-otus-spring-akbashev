@@ -21,6 +21,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public void update(String id, String name) {
+        Author author = getById(id);
+        author.setName(name);
+        authorRepository.save(author);
+    }
+
+    @Override
     public List<Author> readAll() {
         return authorRepository.findAll();
     }
