@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Genres</title>
+    <style type="text/css">
+        body {
+            padding: 30px;
+        }
+
+        table {
+            border-collapse: collapse; /* Убираем двойные линии между ячейками */
+        }
+
+        th, td {
+            border: 1px solid black; /* Параметры рамки */
+            text-align: center; /* Выравнивание по центру */
+            padding: 4px; /* Поля вокруг текста */
+        }
+
+        th {
+            background: #8bbeea; /* Цвет фона ячейки */
+            height: 30px; /* Высота ячеек */
+            vertical-align: bottom; /* Выравнивание по нижнему краю */
+            padding: 0; /* Убираем поля вокруг текста */
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="menu"></div>
+
+<h2>Genres:</h2>
+
+<div class="row">
+    <form method="GET" th:action="@{/genres/add}">
+        <button type="submit" name="submit" value="value" class="link-button">Add genre</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th colspan="2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="genre:${genres}">
+        <td th:text="${genre.getName()}">Genre</td>
+        <td>
+            <form method="GET" th:action="@{/genres/__${genre.getId()}__/edit}">
+                <button type="submit" name="submit" value="value" class="link-button">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form method="POST" th:action="@{/genres/__${genre.getId()}__/remove}">
+                <button type="submit" name="submit" value="value" class="link-button">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

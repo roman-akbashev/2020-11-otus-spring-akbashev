@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Menu</title>
+    <style type="text/css">
+        ul.menu {
+            list-style: none; /*убираем маркеры списка*/
+            margin: 0; /*убираем отступы*/
+            padding-left: 0; /*убираем отступы*/
+            margin-top: 25px; /*делаем отступ сверху*/
+        }
+
+        a.menu {
+            text-decoration: none; /*убираем подчеркивание текста ссылок*/
+            background: #30A8E6; /*добавляем фон к пункту меню*/
+            color: #fff; /*меняем цвет ссылок*/
+            padding: 10px; /*добавляем отступ*/
+            font-family: arial, serif; /*меняем шрифт*/
+            border-radius: 4px; /*добавляем скругление*/
+            -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+            -o-transition: all 0.3s 0.01s ease;
+            -webkit-transition: all 0.3s 0.01s ease;
+        }
+
+        a.menu:hover {
+            background: #1C85BB; /*добавляем эффект при наведении*/
+        }
+
+        li.menu {
+            float: left; /*Размещаем список горизонтально для реализации меню*/
+            margin-right: 5px; /*Добавляем отступ у пунктов меню*/
+
+        }
+    </style>
+</head>
+<body>
+<ul class="menu">
+    <li class="menu"><a class="menu" th:href="@{/books}">Books</a></li>
+    <li class="menu"><a class="menu" th:href="@{/authors}">Authors</a></li>
+    <li class="menu"><a class="menu" th:href="@{/genres}">Genres</a></li>
+    <br>
+</ul>
+</body>

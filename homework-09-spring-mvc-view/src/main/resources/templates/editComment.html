@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Comment</title>
+    <style type="text/css">
+        body {
+            padding: 30px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="menu"></div>
+
+<form action="editComment.html" id="edit-form" th:action="${action} =='add' ? '/books/__${bookId}__/comments/create' :
+    '/books/__${bookId}__/comments/update'" th:method="post" th:object="${comment}">
+    <h2 th:text="${action} =='add' ? 'Comment add:' : 'Comment edit:'">Comment:</h2>
+
+    <div class="row" th:if="${action} !='add'">
+        <label for="id-input">Id:</label>
+        <input id="id-input" name="id" type="text" readonly="readonly" value="1"  th:value="${comment.getId()}"/>
+    </div>
+
+    <div class="row">
+        <label for="holder-input">Name:</label>
+        <input id="holder-input" name="commentText" type="text" value="Swift" th:value="${comment.getCommentText()}"/>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="${action} =='add' ? 'Add' : 'Save'">Save</button>
+    </div>
+</form>
+
+</body>
+</html>

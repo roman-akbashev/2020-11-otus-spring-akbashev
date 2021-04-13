@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Show Book</title>
+    <style type="text/css">
+        body {
+            padding: 30px;
+        }
+
+        table {
+            border-collapse: collapse; /* Убираем двойные линии между ячейками */
+        }
+
+        th, td {
+            border: 1px solid black; /* Параметры рамки */
+            text-align: center; /* Выравнивание по центру */
+            padding: 4px; /* Поля вокруг текста */
+        }
+
+        th {
+            background: #8bbeea; /* Цвет фона ячейки */
+            height: 30px; /* Высота ячеек */
+            vertical-align: bottom; /* Выравнивание по нижнему краю */
+            padding: 0; /* Убираем поля вокруг текста */
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<div th:insert="menu"></div>
+
+<body>
+
+<h2>Book info:</h2>
+
+<div class="row">
+    <span>Name:</span>
+    <span th:text="${book.getName()}">Book</span>
+</div>
+
+<div class="row">
+    <span>Author:</span>
+    <span th:text="${book.getAuthor().getName()}">Author</span>
+</div>
+
+<div class="row">
+    <span>Genre:</span>
+    <span th:text="${book.getGenre().getName()}">Genre</span>
+</div>
+<div class="row">
+    <form method="GET" th:action="@{/books/__${book.getId()}__/comments/add}">
+        <button type="submit" name="submit" value="value" class="link-button">Add comment</button>
+    </form>
+</div>
+<table th:if="${comments.size() > 0}">
+    <h3>Comments:</h3>
+    <tr>
+        <th>Comment text</th>
+        <th colspan="2">Actions</th>
+    </tr>
+    <tr th:each="comment:${comments}">
+        <td th:text="${comment.getCommentText()}">comment</td>
+        <td>
+            <form method="GET" th:action="@{/books/__${book.getId()}__/comments/__${comment.getId()}__/edit}">
+                <button type="submit" name="submit" value="value" class="link-button">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form method="POST" th:action="@{/books/__${book.getId()}__/comments/__${comment.getId()}__/remove}">
+                <button type="submit" name="submit" value="value" class="link-button">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
