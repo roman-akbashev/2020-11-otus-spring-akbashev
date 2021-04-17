@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.otus.spring.domain.Comment;
-import ru.otus.spring.domain.Comment;
 import ru.otus.spring.service.CommentService;
-
-import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -19,7 +16,7 @@ public class CommentController {
     private static final String URL_BOOK_COMMENTS = "/books/%s";
 
     private final CommentService commentService;
-    
+
     @GetMapping("/books/{bookId}/comments/add")
     public String addComment(@PathVariable String bookId, Model model) {
         model.addAttribute("comment", new Comment());

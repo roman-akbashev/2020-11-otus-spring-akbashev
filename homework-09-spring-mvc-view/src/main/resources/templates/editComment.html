@@ -32,16 +32,16 @@
 
     <div class="row" th:if="${action} !='add'">
         <label for="id-input">Id:</label>
-        <input id="id-input" name="id" type="text" readonly="readonly" value="1"  th:value="${comment.getId()}"/>
+        <input id="id-input" name="id" readonly="readonly" th:value="${comment.getId()}" type="text" value="1"/>
     </div>
 
     <div class="row">
         <label for="holder-input">Name:</label>
-        <input id="holder-input" name="commentText" type="text" value="Swift" th:value="${comment.getCommentText()}"/>
+        <input id="holder-input" name="commentText" th:value="${comment.getCommentText()}" type="text" value="Swift"/>
     </div>
 
     <div class="row">
-        <button type="submit" th:text="${action} =='add' ? 'Add' : 'Save'">Save</button>
+        <button th:text="${action} =='add' ? 'Add' : 'Save'" type="submit">Save</button>
     </div>
 </form>
 

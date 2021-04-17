@@ -53,7 +53,7 @@
 </div>
 <div class="row">
     <form method="GET" th:action="@{/books/__${book.getId()}__/comments/add}">
-        <button type="submit" name="submit" value="value" class="link-button">Add comment</button>
+        <button class="link-button" name="submit" type="submit" value="value">Add comment</button>
     </form>
 </div>
 <table th:if="${comments.size() > 0}">
@@ -66,12 +66,12 @@
         <td th:text="${comment.getCommentText()}">comment</td>
         <td>
             <form method="GET" th:action="@{/books/__${book.getId()}__/comments/__${comment.getId()}__/edit}">
-                <button type="submit" name="submit" value="value" class="link-button">Edit</button>
+                <button class="link-button" name="submit" type="submit" value="value">Edit</button>
             </form>
         </td>
         <td>
             <form method="POST" th:action="@{/books/__${book.getId()}__/comments/__${comment.getId()}__/remove}">
-                <button type="submit" name="submit" value="value" class="link-button">Delete</button>
+                <button class="link-button" name="submit" type="submit" value="value">Delete</button>
             </form>
         </td>
     </tr>

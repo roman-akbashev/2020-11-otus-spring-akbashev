@@ -34,7 +34,7 @@
 
 <div class="row">
     <form method="GET" th:action="@{/authors/add}">
-        <button type="submit" name="submit" value="value" class="link-button">Add author</button>
+        <button class="link-button" name="submit" type="submit" value="value">Add author</button>
     </form>
 </div>
 
@@ -50,12 +50,12 @@
         <td th:text="${author.getName()}">Author</td>
         <td>
             <form method="GET" th:action="@{/authors/__${author.getId()}__/edit}">
-                <button type="submit" name="submit" value="value" class="link-button">Edit</button>
+                <button class="link-button" name="submit" type="submit" value="value">Edit</button>
             </form>
         </td>
         <td>
             <form method="POST" th:action="@{/authors/__${author.getId()}__/remove}">
-                <button type="submit" name="submit" value="value" class="link-button">Delete</button>
+                <button class="link-button" name="submit" type="submit" value="value">Delete</button>
             </form>
         </td>
     </tr>
