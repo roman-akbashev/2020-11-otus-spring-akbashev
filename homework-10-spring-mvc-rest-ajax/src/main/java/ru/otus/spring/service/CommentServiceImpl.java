@@ -18,17 +18,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void create(String commentText, String bookId) {
+    public Comment create(String commentText, String bookId) {
         Book book = bookService.getById(bookId);
-        commentRepository.save(Comment.builder().commentText(commentText).book(book).build());
+        return commentRepository.save(Comment.builder().commentText(commentText).book(book).build());
     }
 
     @Transactional
     @Override
-    public void update(String id, String commentText) {
+    public Comment update(String id, String commentText) {
         Comment comment = getById(id);
         comment.setCommentText(commentText);
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     @Transactional

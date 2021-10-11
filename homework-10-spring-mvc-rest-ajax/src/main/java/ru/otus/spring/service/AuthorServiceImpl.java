@@ -17,17 +17,17 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public void create(String name) {
+    public Author create(String name) {
         checkAuthorByName(name);
-        authorRepository.save(Author.builder().name(name).build());
+        return authorRepository.save(Author.builder().name(name).build());
     }
 
     @Override
-    public void update(String id, String name) {
+    public Author update(String id, String name) {
         checkAuthorByName(name);
         Author author = getById(id);
         author.setName(name);
-        authorRepository.save(author);
+        return authorRepository.save(author);
     }
 
     @Override

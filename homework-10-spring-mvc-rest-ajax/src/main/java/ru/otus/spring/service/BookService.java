@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface BookService {
 
-    void create(String name, String authorId, String genreId);
+    Book create(String name, String authorId, String genreId);
 
-    void update(String id, String name, String authorId, String genreId);
+    Book update(String id, String name, String authorId, String genreId);
 
     Book getByAllParameters(String name, String authorId, String genreId);
 

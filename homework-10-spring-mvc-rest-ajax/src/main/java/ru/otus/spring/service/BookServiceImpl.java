@@ -20,24 +20,24 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public void create(String name, String authorId, String genreId) {
+    public Book create(String name, String authorId, String genreId) {
         checkBookByAllParams(name, authorId, genreId);
         Book book = Book.builder()
                 .name(name)
                 .author(authorService.getById(authorId))
                 .genre(genreService.getById(genreId)).build();
-        bookRepository.save(book);
+        return bookRepository.save(book);
     }
 
     @Transactional
     @Override
-    public void update(String id, String name, String authorId, String genreId) {
+    public Book update(String id, String name, String authorId, String genreId) {
         checkBookByAllParams(name, authorId, genreId);
         Book book = getById(id);
         book.setName(name);
         book.setAuthor(authorService.getById(authorId));
         book.setGenre(genreService.getById(genreId));
-        bookRepository.save(book);
+        return bookRepository.save(book);
     }
 
     @Override

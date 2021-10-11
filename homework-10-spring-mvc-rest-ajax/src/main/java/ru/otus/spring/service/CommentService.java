@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface CommentService {
 
-    void create(String commentText, String bookId);
+    Comment create(String commentText, String bookId);
 
-    void update(String id, String commentText);
+    Comment update(String id, String commentText);
 
     void deleteById(String id);
 

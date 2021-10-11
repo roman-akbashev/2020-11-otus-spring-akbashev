@@ -14,20 +14,16 @@ public class ExceptionController {
 
     @ExceptionHandler(EntityCanNotBeDeletedException.class)
     public ResponseEntity<Object> handleEntityCanNotBeDeleted(EntityCanNotBeDeletedException ex) {
-        return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, ex.getMessage()));
+        return new ResponseEntity<>(new ApiError(ex.getMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex.getMessage()));
+        return new ResponseEntity<>(new ApiError(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EntityAlreadyExistsException.class)
     protected ResponseEntity<Object> handleEntityAlreadyExists(EntityAlreadyExistsException ex) {
-        return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, ex.getMessage()));
-    }
-
-    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-        return new ResponseEntity<>(apiError, apiError.getStatus());
+        return new ResponseEntity<>(new ApiError(ex.getMessage()), HttpStatus.CONFLICT);
     }
 }

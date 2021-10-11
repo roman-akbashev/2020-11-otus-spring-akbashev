@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface GenreService {
 
-    void create(String name);
+    Genre create(String name);
 
-    void update(String id, String name);
+    Genre update(String id, String name);
 
     List<Genre> getAll();
 
