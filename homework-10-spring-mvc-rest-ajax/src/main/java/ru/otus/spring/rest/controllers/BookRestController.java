@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.otus.spring.domain.Book;
 import ru.otus.spring.rest.dto.BookDto;
+import ru.otus.spring.rest.mapper.DtoMapper;
 import ru.otus.spring.service.BookService;
 
 import java.util.List;
@@ -14,20 +16,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookRestController {
     private final BookService bookService;
+    private final DtoMapper<Book, BookDto> mapper;
 
     @GetMapping("/api/books")
     public ResponseEntity<List<BookDto>> getBooks() {
-        return new ResponseEntity<>(bookService.getAll().stream().map(BookDto::toDto).collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(bookService.getAll().stream().map(mapper::toDto).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/api/books/{id}")
     public ResponseEntity<BookDto> getBook(@PathVariable String id) {
-        return new ResponseEntity<>(BookDto.toDto(bookService.getById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDto(bookService.getById(id)), HttpStatus.OK);
     }
 
     @PutMapping("/api/books/{id}")
     public ResponseEntity<BookDto> editBook(@PathVariable String id, @RequestBody BookDto bookDto) {
-        return new ResponseEntity<>(BookDto.toDto(bookService.update(id, bookDto.getName(), bookDto.getAuthor().getId(),
+        return new ResponseEntity<>(mapper.toDto(bookService.update(id, bookDto.getName(), bookDto.getAuthor().getId(),
                 bookDto.getGenre().getId())), HttpStatus.OK);
     }
 
@@ -39,7 +42,7 @@ public class BookRestController {
 
     @PostMapping("/api/books")
     public ResponseEntity<BookDto> createBook(@RequestBody BookDto bookDto) {
-        return new ResponseEntity<>(BookDto.toDto(bookService.create(bookDto.getName(), bookDto.getAuthor().getId(),
+        return new ResponseEntity<>(mapper.toDto(bookService.create(bookDto.getName(), bookDto.getAuthor().getId(),
                 bookDto.getGenre().getId())), HttpStatus.CREATED);
     }
 }

@@ -19,6 +19,7 @@ import ru.otus.spring.exceptions.EntityAlreadyExistsException;
 import ru.otus.spring.exceptions.EntityNotFoundException;
 import ru.otus.spring.rest.dto.ApiError;
 import ru.otus.spring.rest.dto.BookDto;
+import ru.otus.spring.rest.mapper.DtoMapper;
 import ru.otus.spring.service.BookService;
 
 import java.util.List;
@@ -43,6 +44,9 @@ class BookRestControllerTest {
     private static final Book book2 = new Book("2", "Book2", author2, genre2);
 
     @Autowired
+    private DtoMapper<Book, BookDto> mapper;
+
+    @Autowired
     private MockMvc mvc;
 
     @MockBean
@@ -64,23 +68,12 @@ class BookRestControllerTest {
     @Test
     void getBooks() throws Exception {
         var books = List.of(book1, book2);
-        var booksDto = List.of(BookDto.toDto(book1), BookDto.toDto(book2));
+        var booksDto = List.of(mapper.toDto(book1), mapper.toDto(book2));
         given(bookService.getAll()).willReturn(books);
         mvc
                 .perform(get("/api/books"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(booksDto))))
-        ;
-    }
-
-    @DisplayName("успешно возвращать книгу")
-    @Test
-    void getBook() throws Exception {
-        given(bookService.getById(book1.getId())).willReturn(book1);
-        mvc
-                .perform(get("/api/books/" + book1.getId()))
-                .andExpect(status().isOk())
-                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(BookDto.toDto(book1)))))
         ;
     }
 
@@ -97,14 +90,25 @@ class BookRestControllerTest {
         ;
     }
 
+    @DisplayName("успешно возвращать книгу")
+    @Test
+    void getBook() throws Exception {
+        given(bookService.getById(book1.getId())).willReturn(book1);
+        mvc
+                .perform(get("/api/books/" + book1.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(mapper.toDto(book1)))))
+        ;
+    }
+
     @DisplayName("успешно редактировать книгу")
     @Test
     void editBook() throws Exception {
         given(bookService.update(book1.getId(), book1.getName(), author1.getId(), genre1.getId())).willReturn(book1);
         mvc
-                .perform(putJson("/api/books/" + book1.getId(), BookDto.toDto(book1)))
+                .perform(putJson("/api/books/" + book1.getId(), mapper.toDto(book1)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(BookDto.toDto(book1)))))
+                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(mapper.toDto(book1)))))
         ;
     }
 
@@ -115,22 +119,8 @@ class BookRestControllerTest {
         given(bookService.update(book1.getId(), book1.getName(), author1.getId(), genre1.getId())).willThrow(new EntityNotFoundException(errorMessage));
         ApiError apiError = new ApiError(errorMessage);
         mvc
-                .perform(putJson("/api/books/" + book1.getId(), BookDto.toDto(book1)))
+                .perform(putJson("/api/books/" + book1.getId(), mapper.toDto(book1)))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(apiError))))
-        ;
-    }
-
-    @DisplayName("возвращать ошибку при редактировании книги с существующими параметрами")
-    @Test
-    void editBookWithAlreadyExistsException() throws Exception {
-        String errorMessage = String.format("Book with name %s, with author %s, " +
-                "with genre %s already exists!", book1.getName(), author1.getName(), genre1.getName());
-        given(bookService.update(book1.getId(), book1.getName(), author1.getId(), genre1.getId())).willThrow(new EntityAlreadyExistsException(errorMessage));
-        ApiError apiError = new ApiError(errorMessage);
-        mvc
-                .perform(putJson("/api/books/" + book1.getId(), BookDto.toDto(book1)))
-                .andExpect(status().isConflict())
                 .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(apiError))))
         ;
     }
@@ -157,6 +147,20 @@ class BookRestControllerTest {
         ;
     }
 
+    @DisplayName("возвращать ошибку при редактировании книги с существующими параметрами")
+    @Test
+    void editBookWithAlreadyExistsException() throws Exception {
+        String errorMessage = String.format("Book with name %s, with author %s, " +
+                "with genre %s already exists!", book1.getName(), author1.getName(), genre1.getName());
+        given(bookService.update(book1.getId(), book1.getName(), author1.getId(), genre1.getId())).willThrow(new EntityAlreadyExistsException(errorMessage));
+        ApiError apiError = new ApiError(errorMessage);
+        mvc
+                .perform(putJson("/api/books/" + book1.getId(), mapper.toDto(book1)))
+                .andExpect(status().isConflict())
+                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(apiError))))
+        ;
+    }
+
     @DisplayName("успешно создавать книгу")
     @Test
     void createBook() throws Exception {
@@ -165,9 +169,9 @@ class BookRestControllerTest {
                 .perform(post("/api/books/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(BookDto.toDto(book1))))
+                        .content(new ObjectMapper().writeValueAsString(mapper.toDto(book1))))
                 .andExpect(status().isCreated())
-                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(BookDto.toDto(book1)))))
+                .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(mapper.toDto(book1)))))
         ;
     }
 
@@ -182,7 +186,7 @@ class BookRestControllerTest {
                 .perform(post("/api/books/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(BookDto.toDto(book1))))
+                        .content(new ObjectMapper().writeValueAsString(mapper.toDto(book1))))
                 .andExpect(status().isConflict())
                 .andExpect(content().string(equalTo(new ObjectMapper().writeValueAsString(apiError))))
         ;

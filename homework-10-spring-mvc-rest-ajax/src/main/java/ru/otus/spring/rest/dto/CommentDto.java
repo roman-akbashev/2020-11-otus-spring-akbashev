@@ -2,16 +2,13 @@ package ru.otus.spring.rest.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.otus.spring.domain.Comment;
+import lombok.NoArgsConstructor;
 
 
-@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class CommentDto {
     private String id;
     private String commentText;
-
-    public static CommentDto toDto(Comment comment) {
-        return new CommentDto(comment.getId(), comment.getCommentText());
-    }
 }

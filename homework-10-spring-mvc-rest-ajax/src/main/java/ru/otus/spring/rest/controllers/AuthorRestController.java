@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.otus.spring.domain.Author;
 import ru.otus.spring.rest.dto.AuthorDto;
+import ru.otus.spring.rest.mapper.DtoMapper;
 import ru.otus.spring.service.AuthorService;
 
 import java.util.List;
@@ -14,20 +16,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthorRestController {
     private final AuthorService authorService;
+    private final DtoMapper<Author, AuthorDto> mapper;
+
 
     @GetMapping("/api/authors")
     public ResponseEntity<List<AuthorDto>> getAuthors() {
-        return new ResponseEntity<>(authorService.getAll().stream().map(AuthorDto::toDto).collect(Collectors.toList()), HttpStatus.OK);
+        return new ResponseEntity<>(authorService.getAll().stream().map(mapper::toDto).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/api/authors/{id}")
     public ResponseEntity<AuthorDto> getAuthor(@PathVariable String id) {
-        return new ResponseEntity<>(AuthorDto.toDto(authorService.getById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDto(authorService.getById(id)), HttpStatus.OK);
     }
 
     @PutMapping("/api/authors/{id}")
     public ResponseEntity<AuthorDto> editAuthor(@PathVariable String id, @RequestBody AuthorDto authorDto) {
-        return new ResponseEntity<>(AuthorDto.toDto(authorService.update(id, authorDto.getName())), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDto(authorService.update(id, authorDto.getName())), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/authors/{id}")
@@ -38,6 +42,6 @@ public class AuthorRestController {
 
     @PostMapping("/api/authors")
     public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto authorDto) {
-        return new ResponseEntity<>(AuthorDto.toDto(authorService.create(authorDto.getName())), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.toDto(authorService.create(authorDto.getName())), HttpStatus.CREATED);
     }
 }
