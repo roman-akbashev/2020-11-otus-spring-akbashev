@@ -7,14 +7,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import ru.otus.spring.controllers.dto.GenreDto;
+import ru.otus.spring.controllers.mapper.DtoMapper;
 import ru.otus.spring.domain.Genre;
 import ru.otus.spring.exceptions.EntityCanNotBeDeletedException;
 import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.repositories.GenreRepository;
-import ru.otus.spring.controllers.dto.GenreDto;
-import ru.otus.spring.controllers.mapper.DtoMapper;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
@@ -64,7 +65,7 @@ public class GenreHandler {
                                     return genreRepository.deleteById(genreId);
                                 })
                 )
-                .then(ok().contentType(APPLICATION_JSON).build())
+                .then(ok().contentType(TEXT_PLAIN).build())
                 .switchIfEmpty(notFound().build());
     }
 }

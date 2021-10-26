@@ -51,4 +51,5 @@ public class WebRouter {
                 .andRoute(PUT("/api/books/{bookId}/comments/{id}").and(accept(APPLICATION_JSON)).and(contentType(APPLICATION_JSON)), commentHandler::edit)
                 .andRoute(DELETE("/api/books/{bookId}/comments/{id}"), commentHandler::delete);
     }
+
 }

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>List of all books</title>
     <style type="text/css">
         body {
@@ -31,6 +32,11 @@
 </head>
 <body>
 <div id="pageBody">
+    <div class="row">
+        <a href="authors.html">Authors</a>
+        <a href="genres.html">Genres</a>
+    </div>
+
     <h3>Books:</h3>
     <table class="books">
         <thead>
@@ -38,33 +44,30 @@
             <th>Name</th>
             <th>Author</th>
             <th>Genre</th>
-            <th>Comments</th>
-            <th>Actions</th>
         </tr>
         </thead>
         <tbody id="booksTable"></tbody>
     </table>
 
-    <!--  add book form -->
     <form id="addBookForm" action="/api/books">
         <h3>Add book:</h3>
 
         <div class="row">
-            <label for="bookTitle">Title:</label>
-            <input id="bookTitle" name="title" type="text" value="" />
+            <label for="bookName">Name:</label>
+            <input id="bookName" name="name" type="text" value=""/>
         </div>
 
         <div class="row">
-            <label for="authorsSelect">Author:</label>
-            <select id="authorsSelect" name="authorId">
-                <option disabled selected value>-- select an author --</option>
+            <label for="authorSelect">Author:</label>
+            <select id="authorSelect" name="authorId">
+                <option disabled selected value><- select author -></option>
             </select>
         </div>
 
         <div class="row">
-            <label for="genresSelect">Genre:</label>
-            <select id="genresSelect" name="genreId">
-                <option disabled selected value>-- select an genre --</option>
+            <label for="genreSelect">Genre:</label>
+            <select id="genreSelect" name="genreId">
+                <option disabled selected value><- select genre -></option>
             </select>
         </div>
 
@@ -92,7 +95,7 @@
                 updateAll();
             },
             error: function (xhr, resp, text) {
-                alert(xhr.responseJSON["errors"].toString());
+                alert(xhr.responseJSON["message"].toString());
             },
         });
     });
@@ -102,7 +105,8 @@
         var $form = $(this);
         $("#pageBody").load(
             $form.attr("action"),
-            function (responseText, textStatus, request) {}
+            function (responseText, textStatus, request) {
+            }
         );
     });
 
@@ -128,28 +132,28 @@
                 updateAll();
             },
             error: function (xhr, resp, text) {
-                alert(xhr.responseJSON["errors"].toString());
+                alert(xhr.responseJSON["message"].toString());
             },
         });
     });
 
     function updateAll() {
         updateBooks();
-        updateGenres();
         updateAuthors();
+        updateGenres();
     }
 
     function resetAddedBookForm() {
         $("#booksTable")[0].innerHTML = "";
-        $("#genresSelect")[0].innerHTML = "";
-        $("#authorsSelect")[0].innerHTML = "";
+        $("#genreSelect")[0].innerHTML = "";
+        $("#authorSelect")[0].innerHTML = "";
         $("#addBookForm")[0].reset();
     }
 
     function updateGenres() {
         $.get("/api/genres").done(function (genres) {
             genres.forEach(function (genre) {
-                $("#genresSelect").append(`
+                $("#genreSelect").append(`
               <option value="${genre.id}"">${genre.name}</option>
             `);
             });
@@ -159,7 +163,7 @@
     function updateAuthors() {
         $.get("/api/authors").done(function (authors) {
             authors.forEach(function (author) {
-                $("#authorsSelect").append(`
+                $("#authorSelect").append(`
               <option value="${author.id}"">${author.name}</option>
             `);
             });
@@ -172,10 +176,10 @@
                 $("#booksTable").append(`
                 <tr>
                   <td>"${book.name}"</td>
-                  <td>${book.author.name}</td>
-                  <td>${book.genre.name}</td>
+                  <td>"${book.authorName}"</td>
+                  <td>"${book.genreName}"</td>
                   <td>
-                    <form name="bookComments" action="/api/books/${book.id}/comments">
+                    <form name="bookComments" action="/comments?bookId=${book.id}">
                       <button type="submit">Comments</button>
                     </form>
                   </td>

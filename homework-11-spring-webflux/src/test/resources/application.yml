@@ -12,4 +12,6 @@ mongock:
 
 logging:
   level:
-    ROOT: ERROR
+    ROOT: INFO
+    org.springframework: INFO
+    ru.otus.spring.hw: INFO

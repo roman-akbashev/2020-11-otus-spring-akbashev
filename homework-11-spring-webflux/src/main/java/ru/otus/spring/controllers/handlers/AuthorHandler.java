@@ -15,6 +15,7 @@ import ru.otus.spring.repositories.AuthorRepository;
 import ru.otus.spring.repositories.BookRepository;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.TEXT_PLAIN;
 import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
@@ -64,7 +65,7 @@ public class AuthorHandler {
                                     return authorRepository.deleteById(authorId);
                                 })
                 )
-                .then(ok().contentType(APPLICATION_JSON).build())
+                .then(ok().contentType(TEXT_PLAIN).build())
                 .switchIfEmpty(notFound().build());
     }
 }

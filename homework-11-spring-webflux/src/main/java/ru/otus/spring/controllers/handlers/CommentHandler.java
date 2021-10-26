@@ -15,7 +15,9 @@ import ru.otus.spring.repositories.BookRepository;
 import ru.otus.spring.repositories.CommentRepository;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.server.ServerResponse.*;
+import static org.springframework.http.MediaType.TEXT_PLAIN;
+import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @RequiredArgsConstructor
 @Component
@@ -56,7 +58,7 @@ public class CommentHandler {
     public @NotNull Mono<ServerResponse> delete(ServerRequest request) {
         return commentRepository
                 .findById(request.pathVariable("id"))
-                .flatMap(p -> noContent().build(commentRepository.delete(p)))
+                .flatMap(p -> commentRepository.deleteById(request.pathVariable("id")).then(ok().contentType(TEXT_PLAIN).build()))
                 .switchIfEmpty(notFound().build());
     }
 

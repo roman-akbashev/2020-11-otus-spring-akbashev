@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class BookDto {
     private String id;
     private String name;
-    private AuthorDto author;
-    private GenreDto genre;
+    private String authorId;
+    private String authorName;
+    private String genreId;
+    private String genreName;
 }

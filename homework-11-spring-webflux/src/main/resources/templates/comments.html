@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all comments</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .comments,
+        .comments td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="headerRow" class="row">
+    <a href="books.html">Back</a>
+</div>
+
+<h3>Comments:</h3>
+
+<input type="hidden" id="bookId" name="bookId" th::value="${bookId}"/>
+
+<table class="comments">
+    <thead>
+    <tr>
+        <th>Comment text</th>
+    </tr>
+    </thead>
+    <tbody id="commentsTable"></tbody>
+</table>
+
+<form id="commentAddForm">
+    <h3>Add comment:</h3>
+
+    <div class="row">
+        <label for="commentText">Comment text:</label>
+        <input id="commentText" name="commentText" type="text" value=""/>
+    </div>
+
+    <div class="row">
+        <button id="saveCommentButton" type="submit">Save</button>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        updateCommentsTable();
+    });
+
+    $(document).on(
+        "submit",
+        "form[name='deleteCommentForm']",
+        function (event) {
+            event.preventDefault();
+            var $form = $(this);
+            $.ajax({
+                url: $form.attr("action"),
+                type: "DELETE",
+                success: function (result) {
+                    resetCommentForm();
+                    updateCommentsTable();
+                },
+                error: function (xhr, resp, text) {
+                    alert(xhr.responseJSON["message"].toString());
+                },
+            });
+        }
+    );
+
+    $("#commentAddForm").submit(function (event) {
+        event.preventDefault();
+        var $form = $(this);
+        var bookId = $("#bookId").attr(":value");
+        var data = {};
+        $.each(this.elements, function (i, v) {
+            var input = $(v);
+            data[input.attr("name")] = input.val();
+            delete data["undefined"];
+        });
+
+        $.ajax({
+            url: "/api/books/" + bookId + "/comments",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            success: function (result) {
+                resetCommentForm();
+                updateCommentsTable();
+            },
+            error: function (xhr, resp, text) {
+                alert(xhr.responseJSON["message"].toString());
+            },
+        });
+    });
+
+    function resetCommentForm() {
+        $("#commentAddForm")[0].reset();
+    }
+
+    function updateCommentsTable() {
+        $("#commentsTable")[0].innerHTML = "";
+        var bookId = $("#bookId").attr(":value");
+        $.get("/api/books/" + bookId + "/comments").done(function (comments) {
+                comments.forEach(function (comment) {
+                    $("#commentsTable").append(`
+                  <tr>
+                    <td>${comment.commentText}</td>
+                    <td>
+                      <form name="deleteCommentForm" action="/api/books/${bookId}/comments/${comment.id}">
+                        <button type="submit">Delete</button>
+                      </form>
+                  </tr>
+              `);
+                });
+            }
+        );
+    }
+</script>
+</body>
+</html>
