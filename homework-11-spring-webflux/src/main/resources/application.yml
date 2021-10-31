@@ -1,0 +1,15 @@
+spring:
+  data:
+    mongodb:
+      database: lib_akbashev
+      uri: mongodb://localhost:27017
+
+mongock:
+  #runner-type: "ApplicationRunner" # default
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.spring.changelog
+
+logging:
+  level:
+    ROOT: info
