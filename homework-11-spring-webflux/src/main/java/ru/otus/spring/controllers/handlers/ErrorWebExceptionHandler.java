@@ -1,6 +1,5 @@
 package ru.otus.spring.controllers.handlers;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.web.WebProperties.Resources;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -34,7 +33,7 @@ public class ErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
         return RouterFunctions.route(RequestPredicates.all(), this::renderErrorResponse);
     }
 
-    private @NotNull Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
+    private Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
         Throwable error = getError(request);
         final Map<String, Object> errorPropertiesMap = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         if (error instanceof EntityCanNotBeDeletedException) {

@@ -1,7 +1,6 @@
 package ru.otus.spring.controllers.handlers;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -26,7 +25,7 @@ public class CommentHandler {
     private final BookRepository bookRepository;
     private final DtoMapper<Comment, CommentDto> mapper;
 
-    public @NotNull Mono<ServerResponse> getAll(ServerRequest request) {
+    public Mono<ServerResponse> getAll(ServerRequest request) {
         String bookId = request.pathVariable("bookId");
         return bookRepository
                 .findById(bookId)
@@ -38,14 +37,14 @@ public class CommentHandler {
                         .body(comments.map(mapper::toDto), CommentDto.class));
     }
 
-    public @NotNull Mono<ServerResponse> create(ServerRequest request) {
+    public Mono<ServerResponse> create(ServerRequest request) {
         return buildMonoComment(request, request.pathVariable("bookId"))
                 .flatMap(commentRepository::save)
                 .map(mapper::toDto)
                 .flatMap(commentDto -> ok().contentType(APPLICATION_JSON).body(Mono.just(commentDto), CommentDto.class));
     }
 
-    public @NotNull Mono<ServerResponse> edit(ServerRequest request) {
+    public Mono<ServerResponse> edit(ServerRequest request) {
         return buildMonoComment(request, request.pathVariable("bookId"))
                 .flatMap(comment -> {
                     comment.setId(request.pathVariable("id"));
@@ -55,14 +54,14 @@ public class CommentHandler {
                 .flatMap(commentDto -> ok().contentType(APPLICATION_JSON).body(Mono.just(commentDto), CommentDto.class));
     }
 
-    public @NotNull Mono<ServerResponse> delete(ServerRequest request) {
+    public Mono<ServerResponse> delete(ServerRequest request) {
         return commentRepository
                 .findById(request.pathVariable("id"))
                 .flatMap(p -> commentRepository.deleteById(request.pathVariable("id")).then(ok().contentType(TEXT_PLAIN).build()))
                 .switchIfEmpty(notFound().build());
     }
 
-    @NotNull
+
     private Mono<Comment> buildMonoComment(ServerRequest request, String bookId) {
         return request.bodyToMono(CommentDto.class)
                 .map(mapper::toEntity)

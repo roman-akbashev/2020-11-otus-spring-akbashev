@@ -1,7 +1,6 @@
 package ru.otus.spring.events;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.AfterSaveEvent;
@@ -18,7 +17,7 @@ public class GenreCascadeUpdateEventsListener extends AbstractMongoEventListener
     private final ReactiveMongoTemplate mongoTemplate;
 
     @Override
-    public void onAfterSave(@NotNull AfterSaveEvent<Genre> event) {
+    public void onAfterSave(AfterSaveEvent<Genre> event) {
         super.onAfterSave(event);
         Genre genre = event.getSource();
         Query query = new Query(Criteria.where("genre.id").is(genre.getId()));

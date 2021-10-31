@@ -2,7 +2,6 @@ package ru.otus.spring.events;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.mongodb.core.mapping.event.AbstractMongoEventListener;
 import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ public class BookCascadeDeleteEventsListener extends AbstractMongoEventListener<
     private final CommentRepository commentRepository;
 
     @Override
-    public void onBeforeDelete(@NotNull BeforeDeleteEvent<Book> event) {
+    public void onBeforeDelete(BeforeDeleteEvent<Book> event) {
         super.onBeforeDelete(event);
         val source = event.getSource();
         String id = source.get("_id").toString();

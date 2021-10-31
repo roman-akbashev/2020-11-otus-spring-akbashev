@@ -1,7 +1,6 @@
 package ru.otus.spring.controllers.handlers;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -26,12 +25,12 @@ public class GenreHandler {
     private final BookRepository bookRepository;
     private final DtoMapper<Genre, GenreDto> mapper;
 
-    public @NotNull Mono<ServerResponse> getAll(ServerRequest request) {
+    public Mono<ServerResponse> getAll(ServerRequest request) {
         return ok().contentType(MediaType.APPLICATION_JSON)
                 .body(genreRepository.findAll().map(mapper::toDto), GenreDto.class);
     }
 
-    public @NotNull Mono<ServerResponse> create(ServerRequest request) {
+    public Mono<ServerResponse> create(ServerRequest request) {
         return request.bodyToMono(GenreDto.class)
                 .map(mapper::toEntity)
                 .flatMap(genreRepository::save)
@@ -41,7 +40,7 @@ public class GenreHandler {
                         .body(Mono.just(genreDto), GenreDto.class));
     }
 
-    public @NotNull Mono<ServerResponse> edit(ServerRequest request) {
+    public Mono<ServerResponse> edit(ServerRequest request) {
         return request.bodyToMono(GenreDto.class)
                 .map(mapper::toEntity)
                 .flatMap(genre -> {
@@ -52,7 +51,7 @@ public class GenreHandler {
                 .flatMap(genreDto -> ok().contentType(APPLICATION_JSON).body(Mono.just(genreDto), GenreDto.class));
     }
 
-    public @NotNull Mono<ServerResponse> delete(ServerRequest request) {
+    public Mono<ServerResponse> delete(ServerRequest request) {
         final String genreId = request.pathVariable("id");
         return genreRepository.findById(genreId)
                 .flatMap(genre ->

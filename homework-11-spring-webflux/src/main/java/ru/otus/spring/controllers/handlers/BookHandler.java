@@ -1,7 +1,6 @@
 package ru.otus.spring.controllers.handlers;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -30,12 +29,12 @@ public class BookHandler {
     private final GenreRepository genreRepository;
     private final DtoMapper<Book, BookDto> mapper;
 
-    public @NotNull Mono<ServerResponse> getAll(ServerRequest request) {
+    public Mono<ServerResponse> getAll(ServerRequest request) {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(bookRepository.findAll().map(mapper::toDto), BookDto.class);
     }
 
-    public @NotNull Mono<ServerResponse> create(ServerRequest request) {
+    public Mono<ServerResponse> create(ServerRequest request) {
         return request.bodyToMono(BookDto.class)
                 .flatMap(dto -> {
                     final Mono<Author> authorMono = authorRepository.findById(dto.getAuthorId()).switchIfEmpty(Mono.error(() -> {
@@ -56,7 +55,7 @@ public class BookHandler {
                 });
     }
 
-    public @NotNull Mono<ServerResponse> edit(ServerRequest request) {
+    public Mono<ServerResponse> edit(ServerRequest request) {
         return request.bodyToMono(BookDto.class)
                 .map(mapper::toEntity)
                 .flatMap(book -> {
@@ -67,7 +66,7 @@ public class BookHandler {
                 .flatMap(authorDto -> ok().contentType(APPLICATION_JSON).body(Mono.just(authorDto), AuthorDto.class));
     }
 
-    public @NotNull Mono<ServerResponse> delete(ServerRequest request) {
+    public Mono<ServerResponse> delete(ServerRequest request) {
         return bookRepository.deleteById(request.pathVariable("id")).then(ok().contentType(TEXT_PLAIN).build());
     }
 }
