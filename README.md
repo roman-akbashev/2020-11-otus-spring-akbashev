@@ -23,3 +23,6 @@ https://otus.ru/lessons/javaspring
 | homework-08-spring-data-mongo | ДЗ к уроку 13 Spring Data для подключения к нереляционным БД |
 | homework-09-spring-mvc-view | ДЗ к уроку 16 Spring MVC View |
 | homework-10-spring-mvc-rest-ajax | ДЗ к уроку 17 Современные приложения на Spring MVC |
+| homework-11-spring-webflux | ДЗ к уроку 20 Spring WebFlux |
+| homework-11-spring-webflux | ДЗ к уроку 20 Spring WebFlux |
+| homework-12-spring-security-auth | ДЗ к уроку 23 Spring Security: Механизмы аутентификации  |
