@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Books</title>
+    <style type="text/css">
+        body {
+            padding: 30px;
+        }
+
+        table {
+            border-collapse: collapse; /* Убираем двойные линии между ячейками */
+        }
+
+        th, td {
+            border: 1px solid black; /* Параметры рамки */
+            text-align: center; /* Выравнивание по центру */
+            padding: 4px; /* Поля вокруг текста */
+        }
+
+        th {
+            background: #8bbeea; /* Цвет фона ячейки */
+            height: 30px; /* Высота ячеек */
+            vertical-align: bottom; /* Выравнивание по нижнему краю */
+            padding: 0; /* Убираем поля вокруг текста */
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="menu"></div>
+
+<h2>Books:</h2>
+
+<div class="row">
+    <form method="GET" th:action="@{/books/add}">
+        <button class="link-button" name="submit" type="submit" value="value">Add book</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th colspan="3">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book:${books}">
+        <td th:text="${book.getName()}">Book name</td>
+        <td th:text="${book.getAuthor().getName()}">Author</td>
+        <td th:text="${book.getGenre().getName()}">Genre</td>
+        <td>
+            <form method="GET" th:action="@{/books/__${book.getId()}__}">
+                <button class="link-button" name="submit" type="submit" value="value">Show</button>
+            </form>
+        </td>
+        <td>
+            <form method="GET" th:action="@{/books/__${book.getId()}__/edit}">
+                <button class="link-button" name="submit" type="submit" value="value">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form method="POST" th:action="@{/books/__${book.getId()}__/remove}">
+                <button class="link-button" name="submit" type="submit" value="value">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
