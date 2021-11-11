@@ -26,3 +26,4 @@ https://otus.ru/lessons/javaspring
 | homework-11-spring-webflux | ДЗ к уроку 20 Spring WebFlux |
 | homework-11-spring-webflux | ДЗ к уроку 20 Spring WebFlux |
 | homework-12-spring-security-auth | ДЗ к уроку 23 Spring Security: Механизмы аутентификации  |
+| homework-13-spring-security-acl | ДЗ к уроку 25 Spring Security: ACL  |
