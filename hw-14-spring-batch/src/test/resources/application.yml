@@ -1,0 +1,20 @@
+spring:
+  batch:
+    job:
+      enabled: false
+  shell:
+    interactive:
+      enabled: false
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    initialization-mode: never
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.spring.changelog.test
+
+logging:
+  level:
+    ROOT: ERROR

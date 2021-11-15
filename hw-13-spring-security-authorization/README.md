@@ -19,7 +19,7 @@
 
 По умолчанию добавлены:
 
-1. Пользователь name:user, password:user, role:USER
+1. Пользователь name:user, password:user, role:USER 
 2. Администратор name:admin, password:admin, role:ADMIN
 
 ADMIN имеет доступ ко всем страницам, может изменять и добавлять сущности. 
