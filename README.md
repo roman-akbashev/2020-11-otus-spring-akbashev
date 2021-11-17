@@ -27,3 +27,4 @@ https://otus.ru/lessons/javaspring
 | hw-12-spring-security-authentication | ДЗ к уроку 23 Spring Security: Механизмы аутентификации  |
 | hw-13-spring-security-authorization | ДЗ к уроку 25 Spring Security: ACL  |
 | hw-14-spring-batch | ДЗ к уроку 26 Spring Batch  |
+| hw-15-spring-integration | ДЗ к уроку 29 Spring Integration: Messages and Channels  |
