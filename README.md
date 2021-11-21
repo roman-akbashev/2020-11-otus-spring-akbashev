@@ -29,3 +29,4 @@ https://otus.ru/lessons/javaspring
 | hw-14-spring-batch | ДЗ к уроку 26. Spring Batch  |
 | hw-15-spring-integration | ДЗ к уроку 29. Spring Integration: Messages and Channels  |
 | hw-16-spring-boot-actuator | ДЗ к уроку 30. Spring Boot Actuator - must have в микросервисах   |
+| hw-17-docker | ДЗ к уроку 32. Docker, оркестрация, облака, облачные хостинги    |
